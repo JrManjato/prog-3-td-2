@@ -20,6 +20,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Match'
+  /matches/{id}:
+    get:
+      tags:
+        - Matches
+      summary: Get match by id
+      operationId: getMatchById
+      responses:
+        '200':
+          description: List of Matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
   /matches/{matchId}/goals:
     post:
       tags:
@@ -47,6 +60,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Match'
+  /players:
+    post:
+      tags:
+        - players
+      summary: Add some players
+      description: add new players
+      operationId: addPlayers
+      parameters:
+        - name: teamId
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreatePlayer'
+      responses:
+        '200':
+          description: The updated match with new scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+    put:
+      tags:
+        - players
+      summary: Edit some players
+      description: | 
+        edit players, the player id is mandatory
+      operationId: editPlayers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+      responses:
+        '200':
+          description: The updated match with new scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
 components:
   schemas:
     Team:
@@ -60,6 +125,10 @@ components:
       properties:
         id:
           type: integer
+        allOf:
+          $ref: "#/components/schemas/CreatePlayer"
+    CreatePlayer:
+      properties:
         name:
           type: string
         isGuardian:
