@@ -1,6 +1,6 @@
 package app.foot.controller.rest.mapper;
 
-import app.foot.controller.rest.PlayerScorer;
+import app.foot.controller.rest.model.PlayerScorer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

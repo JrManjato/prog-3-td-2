@@ -1,5 +1,6 @@
 package app.foot.repository.mapper;
 
+import app.foot.exception.BadRequestException;
 import app.foot.model.Player;
 import app.foot.model.PlayerScorer;
 import app.foot.repository.MatchRepository;
@@ -7,6 +8,7 @@ import app.foot.repository.PlayerRepository;
 import app.foot.repository.TeamRepository;
 import app.foot.repository.entity.PlayerEntity;
 import app.foot.repository.entity.PlayerScoreEntity;
+import app.foot.repository.entity.TeamEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +19,26 @@ public class PlayerMapper {
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
 
+
     public Player toDomain(PlayerEntity entity) {
         return Player.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .isGuardian(entity.isGuardian())
                 .teamName(entity.getTeam().getName())
+                .build();
+    }
+
+    public PlayerEntity toDomain(app.foot.controller.rest.model.Player player, String teamName) {
+        TeamEntity team = teamRepository.findByName(teamName);
+        if (team == null) {
+            throw new BadRequestException("Team#" + teamName + " does not exist");
+        }
+        return PlayerEntity.builder()
+                .id(player.getId())
+                .guardian(player.getIsGuardian())
+                .team(team)
+                .name(player.getName())
                 .build();
     }
 
@@ -40,16 +56,6 @@ public class PlayerMapper {
                 .match(matchRepository.findById(matchId).get())
                 .ownGoal(scorer.getIsOwnGoal())
                 .minute(scorer.getMinute())
-                .build();
-    }
-
-    //TODO: add unit test ok and ko for this
-    public PlayerEntity toEntity(Player domain) {
-        return PlayerEntity.builder()
-                .id(domain.getId())
-                .name(domain.getName())
-                .team(teamRepository.findByName(domain.getTeamName()))
-                .guardian(domain.getIsGuardian())
                 .build();
     }
 }

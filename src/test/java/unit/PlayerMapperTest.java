@@ -1,5 +1,6 @@
 package unit;
 
+import app.foot.exception.BadRequestException;
 import app.foot.model.Player;
 import app.foot.model.PlayerScorer;
 import app.foot.repository.MatchRepository;
@@ -8,6 +9,7 @@ import app.foot.repository.TeamRepository;
 import app.foot.repository.entity.MatchEntity;
 import app.foot.repository.entity.PlayerEntity;
 import app.foot.repository.entity.PlayerScoreEntity;
+import app.foot.repository.entity.TeamEntity;
 import app.foot.repository.mapper.PlayerMapper;
 import org.junit.jupiter.api.Test;
 
@@ -51,6 +53,40 @@ public class PlayerMapperTest {
         Player actual = subject.toDomain(entity);
 
         assertEquals(expected, actual);
+    }
+
+    private static app.foot.controller.rest.model.Player playerModel1() {
+        return app.foot.controller.rest.model.Player.builder()
+                .id(1)
+                .name("Rakoto")
+                .isGuardian(false)
+                .build();
+    }
+
+    private static TeamEntity teamEntityBarea() {
+        return TeamEntity.builder()
+                .id(1)
+                .name("Barea")
+                .build();
+    }
+
+    @Test
+    void player_rest_to_entity_ok() {
+        PlayerEntity expected = playerEntityRakoto(teamEntityBarea());
+        app.foot.controller.rest.model.Player rest = playerModel1();
+        when(teamRepositoryMock.findByName("Barea")).thenReturn(teamEntityBarea());
+        PlayerEntity actual = subject.toDomain(rest, "Barea");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void player_rest_to_entity_ko() {
+        app.foot.controller.rest.model.Player rest = playerModel1();
+        when(teamRepositoryMock.findByName(UnknownTeamEntityName)).thenReturn(null);
+
+        assertThrowsExceptionMessage("Team#" + UnknownTeamEntityName + " does not exist", BadRequestException.class, () -> {
+            subject.toDomain(rest, UnknownTeamEntityName);
+        });
     }
 
     @Test
