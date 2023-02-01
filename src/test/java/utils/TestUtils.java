@@ -1,7 +1,7 @@
 package utils;
 
-import app.foot.controller.rest.Player;
-import app.foot.controller.rest.PlayerScorer;
+import app.foot.controller.rest.model.Player;
+import app.foot.controller.rest.model.PlayerScorer;
 import app.foot.model.Team;
 import app.foot.repository.entity.PlayerEntity;
 import app.foot.repository.entity.PlayerScoreEntity;
@@ -94,6 +94,21 @@ public class TestUtils {
         return TeamEntity.builder()
                 .id(1)
                 .name("Barea")
+                .build();
+    }
+
+
+    public final static String TeamEntityName1 = "E1";
+    public final static String Player_new_name = "Player-new-name";
+    public final static String UnknownTeamEntityName = "UnknownTeamEntityName";
+    public final static int Not_Found_Match_Id = 0;
+    public final static int Valid_Score_Time = 10;
+    public final static int Invalid_Score_Time = 91;
+    public static Player createPlayer(int playerId, boolean isGuardian){
+        return Player.builder()
+                .id(playerId)
+                .name("J" + playerId)
+                .isGuardian(isGuardian)
                 .build();
     }
 

@@ -1,8 +1,12 @@
-package app.foot.controller.rest;
+package app.foot.controller.rest.model;
 
 import java.util.List;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor

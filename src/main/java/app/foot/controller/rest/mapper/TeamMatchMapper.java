@@ -1,6 +1,6 @@
 package app.foot.controller.rest.mapper;
 
-import app.foot.controller.rest.TeamMatch;
+import app.foot.controller.rest.model.TeamMatch;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

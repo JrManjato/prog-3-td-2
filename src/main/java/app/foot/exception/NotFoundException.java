@@ -3,8 +3,8 @@ package app.foot.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class BadRequestException extends ApiException {
-    public BadRequestException(String message) {
+public class NotFoundException extends ApiException {
+    public NotFoundException(String message) {
         super(message);
     }
 }

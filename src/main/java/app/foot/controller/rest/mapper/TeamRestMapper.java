@@ -1,6 +1,6 @@
 package app.foot.controller.rest.mapper;
 
-import app.foot.controller.rest.Team;
+import app.foot.controller.rest.model.Team;
 import org.springframework.stereotype.Component;
 
 @Component
